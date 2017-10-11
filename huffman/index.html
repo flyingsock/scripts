@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>huffman</title>
+</head>
+<body>
+    <div id="huffman" style="margin-left: 10px">
+        <h1>Huffman's code</h1>
+        <input type="text"
+        id="incoming"
+        v-model="message"
+        placeholder="put incoming string here...">
+        <h3> encoded string: </h3>
+        <input type="text" v-model="encodedMessage" disabled />
+        <br/>
+        <h3> decoded string: </h3>
+        <input type="text" v-model="decodedMessage" disabled />
+
+        <table>
+            <thead>
+                <th>letter</th>
+                <th>frequency</th>
+                <th>code</th>
+            </thead>
+            <tbody>
+                <tr v-for="pair in alphabet">
+                    <td>{{pair.letter}}</td>
+                    <td>{{pair.freq}}</td>
+                    <td>{{pair.code}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</body>
+<script type="text/javascript" src="vue.min.js"/></script>
+<script type="text/javascript" src="huffman.js"/></script>
+</html>

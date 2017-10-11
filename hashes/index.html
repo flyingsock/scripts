@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>hashes</title>
+</head>
+
+<body>
+    <div id="hashes">
+        <input v-model="message"
+        type="text"
+        placeholder="put incoming string here..."/>
+        <br />
+        <input v-model="substring"
+        type="text"
+        placeholder="put incoming substring here..."/>
+        <br />
+        <input type="button" value="Search!" v-on:click="search" />
+        <p>
+            {{indexes}}
+        </p>
+    </div>
+</body>
+
+<script type="text/javascript" src="vue.min.js"/></script>
+<script type="text/javascript" src="hashes.js"/></script>
+
+</html>
