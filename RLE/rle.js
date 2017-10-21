@@ -16,22 +16,23 @@ var RLE = {
 
         while (commonMessageCount < length) {
             //подсчёт повторяющихся символов
-    	    while ((message.charAt(commonMessageCount) === message.charAt(commonMessageCount + 1)) && (repeatsCount < 127)) {
-    		    repeatsCount++;
-    		    commonMessageCount++;
-    		}
+            while ((message.charAt(commonMessageCount) === message.charAt(commonMessageCount + 1)) && (repeatsCount < 127)) {
+                repeatsCount++;
+                commonMessageCount++;
+            }
             //обработка случаев: нам попадается экранирующий символ # или число повторений символа больше 3
             if ((message.charAt(commonMessageCount) === "#") || (repeatsCount > 3)) {
-            	encoded += "#" + String.fromCharCode(repeatsCount) + message.charAt(commonMessageCount);
+                encoded += "#" + String.fromCharCode(repeatsCount) + message.charAt(commonMessageCount);
             } else {
-    	    	encoded += message.substr(commonMessageCount + 1 - repeatsCount, repeatsCount);
+                encoded += message.substr(commonMessageCount + 1 - repeatsCount, repeatsCount);
             }
 
-    	    commonMessageCount++;
+            commonMessageCount++;
             repeatsCount = 1;
-    	}
+        }
 
-    	return encoded;
+        return encoded;
+
     },
     decode: function(encodedMessage) {      //функция декодирования
         let length = encodedMessage.length;
@@ -55,17 +56,23 @@ var RLE = {
         return (message.length / encoded.length);
     }
 };
+try {
+    var message = RLE.fromFile(inputFile);
 
-var message = RLE.fromFile(inputFile);
-
-if (mode === "code") {      //обработка выбранного режима
-    let encoded = RLE.encode(message);
-    fs.writeFileSync(outputFile, encoded, "ascii");
-    let compressionQuantity = RLE.compressionQuantity(message, encoded);
-    console.log("Compression quantity: " + compressionQuantity);
-
-} else if (mode === "decode") {
-    fs.writeFileSync(outputFile, RLE.decode(message), "ascii");
-} else {
-    console.log("Wrong 1st argument: mode is not supported.");
+    if (mode === "code") {      //обработка выбранного режима
+        if (message.length === 0) {
+            let encoded = RLE.encode(message);
+            fs.writeFileSync(outputFile, encoded, "ascii");
+            let compressionQuantity = RLE.compressionQuantity(message, encoded);
+            console.log("Compression quantity: " + compressionQuantity);
+        } else {
+            console.log("empty file");
+        }
+    } else if (mode === "decode") {
+        fs.writeFileSync(outputFile, RLE.decode(message), "ascii");
+    } else {
+        console.log("Wrong 1st argument: mode is not supported.");
+    }
+} catch (error) {
+    console.log("absent input file");
 }

@@ -42,14 +42,20 @@ var entropy = new Vue({
                 this.freqs[i].freq /= mSize;
             }
         },
-        
+
         calculateEntropy: function() {      //применяем формулу для расчёта энтропии
-            let alphSizeLog = Math.log(this.alphabet.length);
-            for (let i = 0; i < this.freqs.length; i++) {
-                let part = (Math.log(this.freqs[i].freq) / alphSizeLog);
-                this.entropyValue += this.freqs[i].freq * part;
+
+            if (this.freqs[0].freq === 1) {
+                this.entropyValue = 0;
+            } else {
+                let alphSizeLog = Math.log(this.alphabet.length);
+                for (let i = 0; i < this.freqs.length; i++) {
+                    let part = (Math.log(this.freqs[i].freq) / alphSizeLog);
+                    this.entropyValue += this.freqs[i].freq * part;
+                }
+                this.entropyValue *= -1;
             }
-            this.entropyValue *= -1;
+
         }
     }
 });
