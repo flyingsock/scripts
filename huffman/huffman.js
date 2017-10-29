@@ -1,11 +1,22 @@
 var Utils = {             //утилитные функции
-    comparator: function(a, b) {        //сортировка списка объектов
+    /*comparator: function(a, b) {        //сортировка списка объектов
         if (a.freq > b.freq) {
             return 1;
         } else if (a.freq < b.freq) {
             return -1;
         }
         return 0;
+    },*/
+    minLetter: function(tree) {
+        let minLetter = tree[0];
+        for (let i = 1; i < tree.length; i++) {
+            if (tree[i].value.freq < minLetter.value.freq) {
+                minLetter = tree[i];
+            }
+        }
+        tree.splice(tree.indexOf(minLetter), 1);
+        return minLetter;
+
     },
     Node: function(value, left, right) { //создаём конструктор узла бинарного дерева
         this.value = value;
@@ -15,8 +26,8 @@ var Utils = {             //утилитные функции
     buildTree: function(alphabet) {     //сторим бинарное дерево по входном алфавтиу с частотами
         let tree = alphabet.map((obj) => new Utils.Node(obj, null, null));
         while (tree.length > 1) {
-            let leave1 = tree.shift();
-            let leave2 = tree.shift();
+            let leave1 = Utils.minLetter(tree);
+            let leave2 = Utils.minLetter(tree);
             let result = {
                 letter: leave1.value.letter + leave2.value.letter,
                 freq: leave1.value.freq + leave2.value.freq
@@ -61,7 +72,7 @@ var huffman = new Vue({
             }
             // Сортируем по возрастанию частот.
             // Это важно, чтобы соединять соседнии буквы в родительские листы.
-            alphabet.sort(Utils.comparator);
+            //alphabet.sort(Utils.comparator);
             return alphabet;
         },
         encodedMessage: function() {
@@ -79,6 +90,9 @@ var huffman = new Vue({
                     messageCode.push(letterCode);
                 }
                 return messageCode.join("");
+            } else if (this.alphabet.length === 1) {
+                this.alphabet[0].code = "0";
+                return this.message.split("").map((ch) => this.alphabet[0].code).join("");
             }
         },
         decodedMessage: function() {
@@ -103,6 +117,8 @@ var huffman = new Vue({
                     tree = Utils.buildTree(this.alphabet);
                 }
                 return decoded.join("");
+            } else if (this.alphabet.length === 1) {
+                return this.encodedMessage.split("").map((ch) => this.alphabet[0].letter).join("");
             }
         }
     }
